@@ -1,0 +1,16 @@
+<h1>{{$usuario->Nombre}}{{$usuario->Apellido}}</h1>
+    <ul>
+        <li>{{$usuario->Nombre}}</li>
+        <li>{{$usuario->Apellido}}</li>
+        <li>{{$usuario->FechaNacimiento}}</li>
+        <li>{{$usuario->Genero}}</li>
+        <li>{{$usuario->TipoDocumento}}</li>
+        <li>{{$usuario->NumeroIdentificación}}</li>
+        <li>{{$usuario->NumeroCelular}}</li>
+        <li>{{$usuario->NumeroFijo}}</li>
+        <li>{{$usuario->EmailPersonal}}</li>
+        <li>{{$usuario->EmailSena}}</li>
+        <li>{{$usuario->Dirección}}</li>
+        <li>{{$usuario->Estado}}</li>
+        <li>{{$usuario->rol()->select('tipoRol')->get()}}</li>
+    </ul>
