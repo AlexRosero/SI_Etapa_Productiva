@@ -13,8 +13,9 @@ class UsuarioController extends Controller
      */
     public function index()
     {
+        $paginate = 25;
         return view('usuarios.index')
-        ->with('usuarios', Usuario::paginate(25));
+        ->with('usuarios', Usuario::paginate($paginate));
     }
 
     /**
@@ -49,7 +50,7 @@ class UsuarioController extends Controller
         $newUsuario->Direccion = $request->input('direccion');
         $newUsuario->Estado = $request->input('estado');
         $newUsuario->save();
-        echo "registro";
+        return redirect('usuarios');
     }
 
     /**
@@ -70,9 +71,10 @@ class UsuarioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Usuario $usuario)
     {
-
+        return view('usuarios.edit')
+        ->with('usuario', $usuario);
     }
 
     /**
@@ -82,9 +84,23 @@ class UsuarioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Usuario $usuario)
     {
-        //
+        $usuario->Nombre = $request->input('nombre');
+        $usuario->Apellido = $request->input('apellido');
+        $usuario->FechaNacimiento = $request->input('fechaNacimiento');
+        $usuario->Genero = $request->input('genero');
+        $usuario->TipoDocumento = $request->input('tipoD');
+        $usuario->NumeroIdentificacion = $request->input('numeroD');
+        $usuario->NumeroCelular = $request->input('celular');
+        $usuario->NumeroFijo = $request->input('telefono');
+        $usuario->EmailPersonal = $request->input('emailP');
+        $usuario->EmailSena = $request->input('emailS');
+        $usuario->Direccion = $request->input('direccion');
+        $usuario->Estado = $request->input('estado');
+        $usuario->save();
+
+        return redirect('usuarios');
     }
 
     /**
