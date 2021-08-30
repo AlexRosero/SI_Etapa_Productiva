@@ -18,4 +18,12 @@ class Aprendiz extends Model
 
 
     //use HasFactory;
+
+    public function usuarios(){
+        return $this->hasMany('App\Models\Usuario', 'IdUsuario', 'id_usuario');
+    }
+
+    public function fichas(){
+        return $this->belongsTo('App\Models\Ficha', 'id_ficha', 'IdFicha');
+    }
 }

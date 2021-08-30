@@ -18,18 +18,51 @@ class Usuario extends Model
 
     //use HasFactory;
 
-    //Relacion 1-M UsuarioRol
-    public function usuarioRol(){
-        //hasMany: parameter
-        //1. Modelo a relacionar
-        //2. FK del modelo pápa
+    /////////////////////////////////////////////
+        //Prueba join - roles
+        /*
+        public function rol(/*$id){
+            return $this->leftJoin('usuariorol', 'usuario.IdUsuario', '=', 'usuariorol.id_usuario')
+                ->leftJoin('rol', 'usuariorol.id_rol', '=', 'rol.id')
+                ->select('usuario.IdUsuario', 'rol.tipoRol')
+                //->where('IdUsuario', '=', $id)
+                ->get();
+        }
+        */
+    /////////////////////////////////////////////
 
-        return $this -> hasMany('App\Models\UsuarioRol', 'id_usuario');
-        return $this -> hasMany('App\Models\Rol', 'id');
-    }//FIN UsuarioRol
 
+
+
+    /////////////////////////////////////////////
+    /*
     public function rol(){
-        return $this -> hasMany('App\Models\Rol', 'id');
+        return $this
+        ->hasManyThrough(
+            Rol::class,         //Primero el modelo al que quiero llegar
+            UsuarioRol::class,  //Segundo el modelo intermedio
+            'id_rol',   //FK on the 2 table
+            'id',           //FK on the 1 table
+            'IdUsuario',           //PK on the model principal
+            'id_usuario'            //PD on the 2 table
+        )
+        ->select('Nombre', 'Apellido');
     }
+    */
+    /////////////////////////////////////////////
 
-}
+     public function rol(){
+         return $this
+        ->hasManyThrough(
+            Rol::class,         //Primero el modelo al que quiero llegar
+            UsuarioRol::class,  //Segundo el modelo intermedio
+            'id_usuario',   //FK on the 2 table
+            'id',           //FK on the 1 table
+            'IdUsuario',           //PK on the model principal
+            'id_rol'            //PD on the 2 table
+        )
+        //->select('usuariorol.id_usuario', 'rol.tipoRol')
+        ;
+     }
+
+}//end class

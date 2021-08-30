@@ -1,5 +1,17 @@
-<h1>{{$aprendiz->id}}</h1>
+<h1>
+    @foreach ($aprendiz->usuarios()->get() as $usuario)
+    {{$usuario->Nombre}}
+    {{$usuario->Apellido}}
+    @endforeach
+</h1>
     <ul>
-        <li>Nombre: {{$aprendiz->id_empresa}}</li>
-        <li>Nivel: {{$aprendiz->id_ficha}}</li>
+        <li>
+            Empresa: {{$aprendiz->id_empresa}}
+        </li>
+        <li>
+            @foreach ($aprendiz->fichas()->get() as $ficha)
+                Ficha:{{$ficha->NumeroFicha}}
+            @endforeach
+
+        </li>
     </ul>

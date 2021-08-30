@@ -3,12 +3,13 @@
 </head>
 
 </body>
-<form method="POST" action="{{url('usuarios')}}" class="form-horizontal">
+<form method="POST" action="{{url('aprendices')}}" class="form-horizontal">
+    @method('PUT')
     @csrf
     <fieldset>
 
     <!-- Form Name -->
-    <legend>Crear Usuario</legend>
+    <legend>Crear Aprendiz</legend>
 
     <!-- Text input-->
     <div class="form-group">
@@ -163,10 +164,29 @@
      <div class="form-group">
         <label class="col-md-4 control-label" for="">Rol</label>
         <div class="col-md-4">
-        <select id="" name="rol" class="form-control">
+        <select id="" name="rol" class="form-control" hidden>
+            <option value="1">Aprendiz</option>
+            <!--
+            @ foreach ($roles as $rol)
+                <option { {old('rol')==$rol->id ? 'selected' : ''}} value="{ {$rol->id}}">{ {$rol->tipoRol}}</option>
+            @ endforeach
+            -->
+        </select>
+        </div>
+        @error('rol')
+            {{$message}}
+        @enderror
+    </div>
+    <!--////////////////////////////////////////////////////////////////////-->
+
+     <!--////////////////////////////////////////////////////////////////////-->
+     <div class="form-group">
+        <label class="col-md-4 control-label" for="">Ficha</label>
+        <div class="col-md-4">
+        <select id="" name="ficha" class="form-control">
             <option value="">Seleccione...</option>
-            @foreach ($roles as $rol)
-                <option {{old('rol')==$rol->id ? 'selected' : ''}} value="{{$rol->id}}">{{$rol->tipoRol}}</option>
+            @foreach ($fichas as $ficha)
+                <option {{old('ficha')==$ficha->IdFicha ? 'selected' : ''}} value="{{$ficha->IdFicha}}">{{$ficha->NumeroFicha}}</option>
             @endforeach
         </select>
         </div>
@@ -177,18 +197,8 @@
     <!--////////////////////////////////////////////////////////////////////-->
 
 
-    <!--
-    <div class="form-group">
-        <label class="col-md-4 control-label" for="">Contraseña</label>
-        <div class="col-md-4">
-          <input id="" name="clave" type="password" placeholder="Contraseña" class="form-control input-md">
-
-        </div>
-    </div>
-    -->
-
       <!-- Button -->
-    <div class="form-group">
+      <div class="form-group">
         <label class="col-md-4 control-label" for=""></label>
         <div class="col-md-4">
           <button id="" name="" class="btn btn-primary">Create</button>

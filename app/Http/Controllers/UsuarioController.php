@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Models\Usuario;
+use App\Http\Requests\storeUsuario;
 use Illuminate\Http\Request;
+use App\Models\Rol;
+use App\Models\UsuarioRol;
 
 class UsuarioController extends Controller
 {
@@ -13,10 +16,15 @@ class UsuarioController extends Controller
      */
     public function index()
     {
+
         $paginate = 25;
         return view('usuarios.index')
-        ->with('usuarios', Usuario::paginate($paginate));
+        ->with('usuarios', Usuario::paginate($paginate))
+        ;
+
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -25,7 +33,8 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        return view('usuarios.create');
+        return view('usuarios.create')
+        ->with('roles', Rol::all());
     }
 
     /**
@@ -34,12 +43,15 @@ class UsuarioController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(storeUsuario $request)
     {
         $newUsuario = new Usuario();
         $newUsuario->Nombre = $request->input('nombre');
+        $newUsuarioN = $request->input('nombre');
         $newUsuario->Apellido = $request->input('apellido');
+        $newUsuarioA = $request->input('apellido');
         $newUsuario->FechaNacimiento = $request->input('fechaNacimiento');
+        $newUsuarioF = $request->input('fechaNacimiento');
         $newUsuario->Genero = $request->input('genero');
         $newUsuario->TipoDocumento = $request->input('tipoD');
         $newUsuario->NumeroIdentificacion = $request->input('numeroD');
@@ -49,8 +61,19 @@ class UsuarioController extends Controller
         $newUsuario->EmailSena = $request->input('emailS');
         $newUsuario->Direccion = $request->input('direccion');
         $newUsuario->Estado = $request->input('estado');
+        $newUsuario->Contraseña = $request->input('numeroD');
+
         $newUsuario->save();
-        return redirect('usuarios');
+
+        $newUsuRol = new UsuarioRol();
+        $newUsuRol->id_usuario = $newUsuario->IdUsuario;
+        $newUsuRol->id_rol = $request->input('rol');
+
+        $newUsuRol->save();
+
+
+        return redirect('usuarios')
+    ->with('msg', "Se registro correctamente");
     }
 
     /**
@@ -74,7 +97,8 @@ class UsuarioController extends Controller
     public function edit(Usuario $usuario)
     {
         return view('usuarios.edit')
-        ->with('usuario', $usuario);
+        ->with('usuario', $usuario)
+        ->with('roles', Rol::all());
     }
 
     /**
@@ -84,7 +108,7 @@ class UsuarioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Usuario $usuario)
+    public function update(storeUsuario $request, Usuario $usuario)
     {
         $usuario->Nombre = $request->input('nombre');
         $usuario->Apellido = $request->input('apellido');
@@ -98,9 +122,11 @@ class UsuarioController extends Controller
         $usuario->EmailSena = $request->input('emailS');
         $usuario->Direccion = $request->input('direccion');
         $usuario->Estado = $request->input('estado');
+        $usuario->Contraseña = $request->input('clave');
         $usuario->save();
 
-        return redirect('usuarios');
+        return redirect('usuarios')
+        ->with('msg', "Se actualizo correctamente");
     }
 
     /**
@@ -109,8 +135,13 @@ class UsuarioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(/*Usuario*/ $usuario)
     {
-        //
+        $usuario = Usuario::find($usuario);
+        $usuario->Estado = 'Inactivo';
+        $usuario->save();
+
+        return redirect('usuarios')
+        ->with('msg', "Se modifico a Inactivo correctamente");
     }
 }
